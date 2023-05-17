@@ -1,0 +1,15 @@
+def compare_json_structure(actual_response, expected_response):
+    if set(actual_response.keys()) != set(expected_response.keys()):
+        return False
+
+    for key in actual_response:
+        if isinstance(actual_response[key], dict):
+            if not compare_json_structure(actual_response[key], expected_response[key]):
+                return False
+        elif isinstance(actual_response[key], list):
+            if len(actual_response[key]) != len(expected_response[key]):
+                return False
+            for i in range(len(actual_response[key])):
+                if not compare_json_structure(actual_response[key][i], expected_response[key][i]):
+                    return False
+    return True
