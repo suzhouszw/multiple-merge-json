@@ -1,0 +1,14 @@
+def merge_response_data(current_page_data, next_page_data):
+    merged_dict = current_page_data.copy()
+    for key, value in next_page_data.items():
+        if key in merged_dict:
+            if isinstance(merged_dict[key], list) and isinstance(value, list):
+                merged_dict[key] += value
+            elif isinstance(merged_dict[key], dict) and isinstance(value, dict):
+                merged_dict[key] = merge_response_data(merged_dict[key], value)
+            else:
+                merged_dict[key] = value
+        else:
+            merged_dict[key] = value
+    current_page_data = merged_dict
+    return current_page_data
